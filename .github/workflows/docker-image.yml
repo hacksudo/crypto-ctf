@@ -1,0 +1,32 @@
+name: Deploy CTF
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+
+    runs-on: self-hosted
+
+    steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ubuntu
+            rm -rf crypto-ctf
+            git clone https://github.com/USERNAME/crypto-ctf.git
+            cd crypto-ctf
+            docker build -t crypto-ctf .
+            docker stop crypto-ctf || true
+            docker rm crypto-ctf || true
+            docker run -d -p 80:80 --name crypto-ctf crypto-ctf
