@@ -31,7 +31,11 @@ echo "Invalid Login";
 
 <div class="login-box">
 
+<<<<<<< HEAD
 <h2> Crypto CTF Login</h2>
+=======
+<h2>hacksudo Crypto CTF Login</h2>
+>>>>>>> ea650ad (update)
 
 <form method="POST">
 
